@@ -9,10 +9,9 @@
   upstream notice, including its third-party attribution, as retrieved.
 - Attribution: Service Screener, Copyright Amazon.com, Inc. or its affiliates.
   All Rights Reserved.
-- Use: The project owner states that this skill was developed by converting
-  service-screener-v2 into agent-oriented assessment guidance. Treat the
-  corresponding service-check guidance as adapted from the upstream project
-  for attribution and license review; do not describe the use as ideas only.
+- Use: This skill was developed by converting service-screener-v2 into
+  agent-oriented assessment guidance. The corresponding service-check
+  guidance is attributed as an adaptation of the upstream project.
 
 ### Modification and source record
 
@@ -79,13 +78,10 @@ copying or the origin of individual wording.
 The upstream notice mentions AdminLTE. Its notice is retained as part of the
 upstream NOTICE copy; this does not assert that AdminLTE is included in this
 skill. No AdminLTE assets were identified in the current repository inventory.
-Confirm the applicable notices and any additional sources before publication.
 
-First-party material remains offered under the root MIT-0 `LICENSE`; upstream
-material remains subject to its Apache 2.0 terms. The project owner should
-confirm the scope, attribution, and overall license presentation with the
-appropriate open-source/legal reviewer before publication. The separate
-third-party generative-AI disposition is also pending.
+First-party material is offered under the root MIT-0 `LICENSE`. The
+service-screener-v2 material adapted for this project is subject to the
+applicable Apache License 2.0 terms and notices referenced above.
 
 ## AWS documentation
 
