@@ -81,6 +81,20 @@ links, the license and all third-party attribution before publication.
     constraints are reviewed. Missing workload requirements also prevents a
     pass. A broad grant constrained by an effective boundary must not alone be
     reported as proven effective access.
+19. **S3 lifecycle scope and status:** With a documented lifecycle requirement,
+    simulate a configuration containing only disabled rules and another with
+    enabled rules whose filters exclude the required scope; neither may pass.
+    An enabled rule with matching scope, action and timing passes. Unknown
+    requirements or scope and access denied are not assessed; a confirmed
+    absent configuration fails only when a lifecycle rule is required.
+    Verify a disabled Intelligent-Tiering transition does not pass S3_009.
+20. **Lambda memory sizing:** For a synthetic simple function at 128 MB with
+    representative evidence satisfying documented performance and cost
+    requirements, verify LAMBDA_006 passes. The 128 MB setting alone is not
+    assessed, not failed or passed. A demonstrated memory bottleneck that
+    violates a performance target fails; a better result alone and low memory
+    use alone are insufficient. Verify the agent neither retrieves raw
+    logs nor executes Power Tuning as part of the read-only assessment.
 
 Record the agent, version, test date, fixture, observed behavior and any
 limitations. Never run remediation or mutate resources during assessment

@@ -65,12 +65,13 @@ the corresponding checks not assessed. Apply the same rule to other tools.
 - **Recommendation**: Set timeout based on expected execution duration.
 
 ## Check: LAMBDA_006 — Memory Optimization
-- **API**: `aws lambda get-function-configuration` → `.MemorySize`
-- **Pass**: Memory sized appropriately (use Lambda Power Tuning)
-- **Fail**: Default 128MB or significantly over-provisioned
+- **Evidence**: Use the safely filtered `aws lambda get-function-configuration` → `.MemorySize`, documented workload performance and cost requirements, and representative, already available measurements or tuning results. Treat log content as sensitive: do not retrieve raw logs merely to obtain memory-use statistics; use approved, locally filtered aggregate evidence.
+- **Pass**: Representative evidence shows that the configured memory meets the workload's performance and cost requirements, including when the configured value is 128 MB.
+- **Fail**: Representative evidence demonstrates that the current allocation fails documented performance or cost requirements, such as a confirmed memory bottleneck that violates a performance target. A measured alternative is useful evidence, but a better result alone does not prove the current setting violates a requirement.
+- **Not assessed**: Workload requirements, representative evidence, or safe access to the required data are missing. The configured value alone, including the default 128 MB, cannot prove that memory is appropriate or inappropriate; low memory utilization alone also does not establish over-provisioning because CPU allocation affects duration.
 - **Severity**: 🟢 IMPROVEMENT
 - **Pillar**: Cost Optimization, Performance Efficiency
-- **Recommendation**: Use AWS Lambda Power Tuning to find optimal memory.
+- **Recommendation**: Review existing representative duration, cost, memory and tuning evidence. AWS Lambda Power Tuning runs the function and can create resources or incur charges; discuss a separate, authorized test rather than executing it during this read-only assessment.
 
 ## Check: LAMBDA_007 — VPC Configuration
 - **API**: `aws lambda get-function-configuration` → `.VpcConfig`

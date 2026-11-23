@@ -32,12 +32,14 @@ for the source record and Apache 2.0 terms.
 - **Recommendation**: Enable versioning for data protection and recovery.
 
 ## Check: S3_004 — Lifecycle Policy
-- **API**: `aws s3api get-bucket-lifecycle-configuration`
-- **Pass**: Lifecycle rules configured
-- **Fail**: No lifecycle configuration
+- **API**: `aws s3api get-bucket-lifecycle-configuration`. Compare each rule's status, filter and actions with the documented lifecycle requirements and relevant object scope; do not retrieve object contents or object inventories.
+- **Pass**: Enabled rules cover the required scope and specify actions and timing that meet the documented requirements. A configured rule alone does not prove that objects have actually transitioned or expired.
+- **Fail**: A lifecycle configuration is required for the selected scope, and complete evidence confirms it is absent or that enabled rules do not meet the documented scope, action or timing requirements. A configuration containing only disabled or inapplicable rules does not satisfy the requirement.
+- **Not applicable**: The workload's documented requirements confirm that no lifecycle rule is needed for the selected scope.
+- **Not assessed**: The workload requirements or relevant object scope are unknown, the rule filters cannot be evaluated against that scope, or the API is inaccessible or fails for a reason other than a confirmed `NoSuchLifecycleConfiguration` response. A confirmed absence is not evidence of a violation when the requirements are unknown.
 - **Severity**: 🟡 MEDIUM
 - **Pillar**: Cost Optimization
-- **Recommendation**: Configure lifecycle rules to transition/expire objects.
+- **Recommendation**: Review retention, access patterns and costs before configuring lifecycle rules; ensure enabled rules and their filters meet the workload requirements.
 
 ## Check: S3_005 — Access Logging
 - **API**: `aws s3api get-bucket-logging`
@@ -77,10 +79,10 @@ for the source record and Apache 2.0 terms.
 ## Check: S3_009 — Intelligent Tiering
 - **Evidence**: Review `aws s3api get-bucket-lifecycle-configuration` for transitions to the `INTELLIGENT_TIERING` storage class, together with approved, current aggregate storage-class usage evidence and workload access-pattern requirements. Do not retrieve object contents or object inventories as part of this check.
 - **Optional API**: `aws s3api list-bucket-intelligent-tiering-configurations` lists optional archive-tier configurations, with pagination. If inspecting one configuration, `get-bucket-intelligent-tiering-configuration` requires its `--id`. These APIs describe optional archive tiers, not whether objects use Intelligent-Tiering.
-- **Pass**: Evidence shows that relevant data uses, or an applicable lifecycle rule transitions it to, Intelligent-Tiering in a manner that satisfies the established workload requirements.
+- **Pass**: Evidence shows that relevant data uses, or an enabled lifecycle rule with an applicable scope and timing transitions it to, Intelligent-Tiering in a manner that satisfies the established workload requirements.
 - **Fail**: Complete evidence shows that Intelligent-Tiering is not used or configured for the relevant data despite an established requirement to use it.
 - **Not applicable**: The workload's documented access and cost requirements make Intelligent-Tiering unsuitable.
-- **Not assessed**: Requirements, relevant usage, lifecycle scope, or permissions are insufficient to decide. No archive-tier configuration alone is not evidence that Intelligent-Tiering is unused; a large bucket alone does not establish that it is appropriate.
+- **Not assessed**: Requirements, relevant usage, lifecycle scope, or permissions are insufficient to decide. A disabled transition alone does not establish that the relevant data is unused; without sufficient usage evidence it is not assessed. No archive-tier configuration alone is not evidence that Intelligent-Tiering is unused; a large bucket alone does not establish that it is appropriate.
 - **Severity**: 🟢 IMPROVEMENT
 - **Pillar**: Cost Optimization
 - **Recommendation**: Evaluate Intelligent-Tiering against object sizes, access patterns, retrieval needs and costs before changing storage class or lifecycle rules.
