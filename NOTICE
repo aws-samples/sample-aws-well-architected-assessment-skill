@@ -1,0 +1,14 @@
+AWS Well-Architected Assessment Skill
+
+This project references the AWS Well-Architected Framework and includes
+assessment guidance adapted from service-screener-v2. See
+THIRD-PARTY-LICENSES for the source record and licensing information.
+
+Service Screener
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+The upstream NOTICE is preserved at
+licenses/service-screener-v2-NOTICE.txt. The upstream Apache License 2.0
+is included at licenses/service-screener-v2-Apache-2.0.txt.
+
+AWS and Amazon are trademarks of Amazon.com, Inc. or its affiliates.

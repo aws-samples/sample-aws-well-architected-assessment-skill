@@ -1,0 +1,94 @@
+# Third-party notices
+
+## service-screener-v2
+
+- Source: https://github.com/aws-samples/service-screener-v2
+- Upstream license: Apache License 2.0; a copy is included at
+  `licenses/service-screener-v2-Apache-2.0.txt`.
+- Upstream NOTICE: `licenses/service-screener-v2-NOTICE.txt` contains the
+  upstream notice, including its third-party attribution, as retrieved.
+- Attribution: Service Screener, Copyright Amazon.com, Inc. or its affiliates.
+  All Rights Reserved.
+- Use: The project owner states that this skill was developed by converting
+  service-screener-v2 into agent-oriented assessment guidance. Treat the
+  corresponding service-check guidance as adapted from the upstream project
+  for attribution and license review; do not describe the use as ideas only.
+
+### Modification and source record
+
+The upstream scanner's service-oriented assessment material was converted
+into Markdown guides for an agent-led, read-only workflow. This repository
+organizes checks into pass/fail guidance, severity and pillar mappings, adds
+agent safety and output-handling rules, and uses its own reporting workflow.
+These are project-level descriptions, not a claim that every individual
+check or sentence originated upstream.
+
+The 21 service guides that explicitly reference upstream service directories
+are listed below. Paths are source references in those guides, not proof of
+which exact upstream files or text were copied:
+
+| Local `references/service-checks/` guide | Referenced upstream directory |
+| --- | --- |
+| `apigateway-checks.md` | `services/apigateway/` |
+| `cloudfront-checks.md` | `services/cloudfront/` |
+| `cloudtrail-checks.md` | `services/cloudtrail/` |
+| `cloudwatch-checks.md` | `services/cloudwatch/` |
+| `dynamodb-checks.md` | `services/dynamodb/` |
+| `ec2-checks.md` | `services/ec2/` |
+| `efs-checks.md` | `services/efs/` |
+| `eks-checks.md` | `services/eks/` |
+| `elasticache-checks.md` | `services/elasticache/` |
+| `glue-checks.md` | `services/glue/` |
+| `guardduty-checks.md` | `services/guardduty/` |
+| `iam-checks.md` | `services/iam/` |
+| `kms-checks.md` | `services/kms/` |
+| `lambda-checks.md` | `services/lambda_/` |
+| `opensearch-checks.md` | `services/opensearch/` |
+| `rds-checks.md` | `services/rds/` |
+| `redshift-checks.md` | `services/redshift/` |
+| `s3-checks.md` | `services/s3/` |
+| `sagemaker-checks.md` | `services/sagemaker/` |
+| `sqs-checks.md` | `services/sqs/` |
+| `vpc-checks.md` | `services/ec2/` |
+
+`securityhub-checks.md` also describes itself as extending upstream security
+posture coverage, without naming a specific upstream directory. The other
+service guides name AWS best-practice references rather than an upstream
+directory; this is not a determination that they are independent works.
+
+For this preliminary review, the upstream repository was inspected at commit
+`4ba3146a7593b72ce740dadccb1e05ae599e43e7` on 2026-11-23. The owner has not
+identified the upstream revision actually used during development, so this
+snapshot is a comparison reference, not a claimed original source revision.
+The review inventoried guide references and spot-checked Lambda and EFS
+against upstream service material; it did not establish line-by-line
+provenance for all check text or all other documentation.
+
+The owner estimates development began in early July 2026. Upstream commit
+`87cf4561cb196c33dec30ce42314f0467a3c9ad0`, dated 2026-07-08, was also
+checked as a possible period reference. The referenced service directories
+were present at that commit, and its LICENSE and NOTICE match the later
+snapshot. This does not establish which upstream revision was actually used.
+
+For example, the Lambda guide's dead-letter-queue and code-signing topics
+also occur in upstream `services/lambda_/lambda.reporter.json`. The EFS
+guide's encryption, backup and lifecycle topics also occur in upstream
+`services/efs/efs.reporter.json`. Topic overlap alone does not establish
+copying or the origin of individual wording.
+
+The upstream notice mentions AdminLTE. Its notice is retained as part of the
+upstream NOTICE copy; this does not assert that AdminLTE is included in this
+skill. No AdminLTE assets were identified in the current repository inventory.
+Confirm the applicable notices and any additional sources before publication.
+
+First-party material remains offered under the root MIT-0 `LICENSE`; upstream
+material remains subject to its Apache 2.0 terms. The project owner should
+confirm the scope, attribution, and overall license presentation with the
+appropriate open-source/legal reviewer before publication. The separate
+third-party generative-AI disposition is also pending.
+
+## AWS documentation
+
+The README and check guides link to public AWS documentation. Those links do
+not grant a license to reproduce documentation content; verify the source and
+applicable terms before copying any material into this repository.

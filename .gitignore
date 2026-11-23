@@ -1,0 +1,13 @@
+# Local assessment outputs and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.zip
+dist/
+scan-outputs/
+assessment-reports/
+.DS_Store
