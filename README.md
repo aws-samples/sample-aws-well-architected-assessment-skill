@@ -113,6 +113,9 @@ THREAT-MODEL.md                Threats, mitigations and residual risks
 - [service-screener-v2](https://github.com/aws-samples/service-screener-v2),
   the source for adapted assessment guidance; see
   [third-party notices](THIRD-PARTY-LICENSES).
-- First-party material is offered under [MIT-0](LICENSE), subject to the
-  applicable third-party terms. Upstream material is subject to its
-  [Apache License 2.0](licenses/service-screener-v2-Apache-2.0.txt).
+- First-party material is offered under [MIT-0](LICENSE). Some service-check
+  guides are adapted from service-screener-v2; their source, modifications,
+  and applicable [Apache License 2.0](licenses/service-screener-v2-Apache-2.0.txt)
+  notices are described in [third-party notices](THIRD-PARTY-LICENSES). When
+  redistributing, comply with the applicable license requirements, including
+  retaining relevant copyright, license, and NOTICE statements.

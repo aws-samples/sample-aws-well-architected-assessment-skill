@@ -75,4 +75,4 @@ THREAT-MODEL.md                威胁、缓解措施与剩余风险
 
 - [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
 - [service-screener-v2](https://github.com/aws-samples/service-screener-v2)：本项目改编评估指南的来源，详见[第三方声明](THIRD-PARTY-LICENSES)。
-- 第一方内容按 [MIT-0](LICENSE) 提供；上游内容仍受其 [Apache 2.0 许可](licenses/service-screener-v2-Apache-2.0.txt)约束。
+- 本项目第一方内容按 [MIT-0](LICENSE) 提供。部分服务检查指南改编自 service-screener-v2，其来源、修改说明及适用的 [Apache License 2.0](licenses/service-screener-v2-Apache-2.0.txt) 声明见[第三方声明](THIRD-PARTY-LICENSES)。重新分发时，请遵守该许可证的适用要求，包括保留相关版权、许可和 NOTICE 声明。
