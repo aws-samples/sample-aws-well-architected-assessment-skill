@@ -58,6 +58,29 @@ links, the license and all third-party attribution before publication.
 14. **Password expiry and generation:** Use a password policy with expiry
     disabled and a node type without verified generation information. Verify
     the former fails the sample baseline and the latter is not assessed.
+15. **S3 public policy classification:** Use a synthetic wildcard-principal
+    allow with a broad `aws:SourceIp` condition and an S3 policy status of
+    public. Verify S3_006 fails as a public-policy finding even though a
+    condition exists, without claiming effective exposure. A confirmed
+    non-public status passes only this policy-classification check; access
+    denied is not assessed, and a confirmed absent policy is not applicable.
+16. **S3 Intelligent-Tiering:** Model objects using Intelligent-Tiering without
+    an optional archive configuration; the empty archive list must not cause
+    S3_009 to fail. Verify an applicable lifecycle transition plus documented
+    workload requirements can pass, while unknown requirements or incomplete
+    usage evidence is not assessed. An archive configuration alone must not
+    establish usage. If fetching a single archive configuration, supply its ID.
+17. **Lambda asynchronous failure handling:** For an asynchronous qualifier
+    with no function DLQ but an appropriate on-failure destination, verify
+    LAMBDA_002 passes. With confirmed required retention and neither mechanism,
+    verify it fails. An unknown qualifier or inaccessible configuration is
+    not assessed; a confirmed synchronous path is not applicable.
+18. **Lambda role policies:** Give a synthetic execution role a managed policy
+    with a broad grant and return only its name and ARN. Verify LAMBDA_003
+    is not assessed until its default policy document and applicable
+    constraints are reviewed. Missing workload requirements also prevents a
+    pass. A broad grant constrained by an effective boundary must not alone be
+    reported as proven effective access.
 
 Record the agent, version, test date, fixture, observed behavior and any
 limitations. Never run remediation or mutate resources during assessment

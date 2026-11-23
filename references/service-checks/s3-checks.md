@@ -47,13 +47,15 @@ for the source record and Apache 2.0 terms.
 - **Pillar**: Security, Operational Excellence
 - **Recommendation**: Enable server access logging for audit trail.
 
-## Check: S3_006 — Bucket Policy Overly Permissive
-- **API**: `aws s3api get-bucket-policy`
-- **Pass**: No `Principal: "*"` without conditions
-- **Fail**: Policy allows public access via wildcard principal
+## Check: S3_006 — Public Bucket Policy
+- **API**: `aws s3api get-bucket-policy-status` → `.PolicyStatus.IsPublic`; use `get-bucket-policy` when needed to investigate the policy, subject to the safe-output rules.
+- **Pass**: S3 reports the bucket policy as non-public. This applies only to the policy's public classification; it does not establish least privilege or rule out access through ACLs, access points, or other paths.
+- **Fail**: S3 reports the bucket policy as public. Report this as a public-policy finding, not proof that the bucket or its objects are reachable: block public access and other controls may restrict effective access.
+- **Not applicable**: The service confirms that no bucket policy exists. Do not infer that other access paths are private.
+- **Not assessed**: Access is denied, the status is unavailable or unsupported, or policy existence cannot be confirmed. A wildcard principal with a condition must not automatically pass; broad conditions can still be public.
 - **Severity**: 🔴 HIGH
 - **Pillar**: Security
-- **Recommendation**: Restrict bucket policy to specific principals and conditions.
+- **Recommendation**: Review public grants and restrict the policy to the intended principals and conditions. Assess effective exposure separately.
 
 ## Check: S3_007 — SSL/TLS Enforcement
 - **API**: `aws s3api get-bucket-policy`
@@ -73,9 +75,12 @@ for the source record and Apache 2.0 terms.
 - **Recommendation**: Enable MFA Delete for critical data buckets.
 
 ## Check: S3_009 — Intelligent Tiering
-- **API**: `aws s3api get-bucket-intelligent-tiering-configuration`
-- **Pass**: Intelligent tiering configured for variable access patterns
-- **Fail**: No intelligent tiering on large buckets
+- **Evidence**: Review `aws s3api get-bucket-lifecycle-configuration` for transitions to the `INTELLIGENT_TIERING` storage class, together with approved, current aggregate storage-class usage evidence and workload access-pattern requirements. Do not retrieve object contents or object inventories as part of this check.
+- **Optional API**: `aws s3api list-bucket-intelligent-tiering-configurations` lists optional archive-tier configurations, with pagination. If inspecting one configuration, `get-bucket-intelligent-tiering-configuration` requires its `--id`. These APIs describe optional archive tiers, not whether objects use Intelligent-Tiering.
+- **Pass**: Evidence shows that relevant data uses, or an applicable lifecycle rule transitions it to, Intelligent-Tiering in a manner that satisfies the established workload requirements.
+- **Fail**: Complete evidence shows that Intelligent-Tiering is not used or configured for the relevant data despite an established requirement to use it.
+- **Not applicable**: The workload's documented access and cost requirements make Intelligent-Tiering unsuitable.
+- **Not assessed**: Requirements, relevant usage, lifecycle scope, or permissions are insufficient to decide. No archive-tier configuration alone is not evidence that Intelligent-Tiering is unused; a large bucket alone does not establish that it is appropriate.
 - **Severity**: 🟢 IMPROVEMENT
 - **Pillar**: Cost Optimization
-- **Recommendation**: Enable S3 Intelligent-Tiering for automatic cost savings.
+- **Recommendation**: Evaluate Intelligent-Tiering against object sizes, access patterns, retrieval needs and costs before changing storage class or lifecycle rules.

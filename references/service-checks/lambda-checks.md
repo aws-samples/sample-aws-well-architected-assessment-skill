@@ -13,7 +13,7 @@ approved local AWS CLI with debug output disabled and output field allowlists:
 
 ```bash
 aws lambda list-functions --query 'Functions[].{Name:FunctionName,Runtime:Runtime}' --output json
-aws lambda get-function-configuration --function-name <function-name> --query '{DeadLetterConfig:DeadLetterConfig,KMSKeyArn:KMSKeyArn,Timeout:Timeout,MemorySize:MemorySize,VpcId:VpcConfig.VpcId,TracingMode:TracingConfig.Mode}' --output json
+aws lambda get-function-configuration --function-name <function-name> --query '{Role:Role,DeadLetterConfig:DeadLetterConfig,KMSKeyArn:KMSKeyArn,Timeout:Timeout,MemorySize:MemorySize,VpcId:VpcConfig.VpcId,TracingMode:TracingConfig.Mode}' --output json
 ```
 
 Do not display `Environment` or raw responses. CLI filtering is local, not
@@ -29,21 +29,24 @@ the corresponding checks not assessed. Apply the same rule to other tools.
 - **Pillar**: Security, Operational Excellence
 - **Recommendation**: Upgrade to a supported runtime version.
 
-## Check: LAMBDA_002 — Dead Letter Queue Configuration
-- **API**: `aws lambda get-function-configuration` → `.DeadLetterConfig`
-- **Pass**: DLQ (SQS or SNS) configured
-- **Fail**: No DLQ configured
+## Check: LAMBDA_002 — Asynchronous Failure Handling
+- **API**: For each relevant function, version or alias, use the safely filtered `aws lambda get-function-configuration` → `.DeadLetterConfig` and `aws lambda get-function-event-invoke-config` → `.DestinationConfig.OnFailure`. `list-function-event-invoke-configs` can help discover configured qualifiers; paginate it and also establish which qualifiers actually receive asynchronous invocations.
+- **Pass**: An applicable asynchronous invocation path has a function DLQ or an on-failure destination that meets its documented failure-handling requirements.
+- **Fail**: The workload requires failed asynchronous invocations to be retained, and complete evidence for the applicable invocation path confirms neither a function DLQ nor an on-failure destination is configured.
+- **Not applicable**: The assessed path is confirmed to be synchronous or is an event source mapping; evaluate its source-specific retry and failure handling separately.
+- **Not assessed**: Invocation mode, relevant qualifiers, requirements, configuration, or access cannot be established. An empty list of explicit event-invoke configurations or an ambiguous resource-not-found error alone does not prove the function or qualifier lacks failure handling.
 - **Severity**: 🟡 MEDIUM
 - **Pillar**: Reliability
-- **Recommendation**: Configure a DLQ to capture failed async invocations.
+- **Recommendation**: For applicable asynchronous paths, consider a DLQ or on-failure destination and verify that it meets the workload's recovery requirements.
 
 ## Check: LAMBDA_003 — Execution Role Scope
-- **API**: `aws iam get-role-policy` / `list-attached-role-policies`
-- **Pass**: Role follows least privilege (no `*` resource with broad actions)
-- **Fail**: Role has overly permissive policies (e.g., `Action: *`)
+- **API**: Identify `.Role` using the safely filtered function configuration. Paginate `aws iam list-role-policies` and retrieve each inline policy with `get-role-policy`; paginate `list-attached-role-policies`, then use `get-policy` and `get-policy-version` to retrieve each attached managed policy's default version. Review `get-role` for a permissions boundary and obtain its policy where applicable.
+- **Pass**: The relevant policy documents and applicable constraints have been reviewed against established workload requirements, and the assessed permissions are justified. The absence of `Action: "*"` alone does not establish least privilege.
+- **Fail**: Evidence establishes that the role has effective permissions beyond the documented workload requirements. Report broad identity-policy grants and any known constraints separately; a broad policy statement alone does not prove effective access if a boundary, explicit deny or other control limits it.
+- **Not assessed**: Policy enumeration or retrieval is incomplete, a required boundary or other applicable control cannot be evaluated, or workload permissions and effective scope are unknown. Attached policy names and ARNs alone are not policy contents.
 - **Severity**: 🔴 HIGH
 - **Pillar**: Security
-- **Recommendation**: Scope IAM role to minimum required permissions.
+- **Recommendation**: Review the role's effective permissions against the function's required actions and resources; reduce unjustified grants.
 
 ## Check: LAMBDA_004 — Environment Variable Encryption
 - **API**: `aws lambda get-function-configuration` → `.KMSKeyArn`
